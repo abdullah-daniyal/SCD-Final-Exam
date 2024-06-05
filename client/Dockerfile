@@ -1,13 +1,14 @@
-# Stage 1: Build the React application
-FROM node:16 as builder
-WORKDIR /app/1234_frontend
+# Build stage
+FROM node:16.13.2-alpine as build
+WORKDIR /i211234_frontend
 COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
 
-# Stage 2: Serve the app using Nginx
-FROM nginx:alpine
-COPY --from=builder /app/1234_frontend/build /usr/share/nginx/html
+# Nginx stage
+FROM nginx:1.21.5-alpine
+COPY --from=build /i211234_frontend/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
 EXPOSE 1234
 CMD ["nginx", "-g", "daemon off;"]

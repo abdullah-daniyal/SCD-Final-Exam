@@ -1,7 +1,23 @@
-FROM node:16
-WORKDIR /app/1235_auth
-COPY package*.json /app/1235_auth/
+# Use an official runtime as a parent image
+FROM node:20.13.1-alpine3.19
+
+# Set the working directory in the container
+WORKDIR /your_i211234_auth_backend
+
+# Copy the current directory contents into the container at /usr/src/app
+COPY package*.json ./
+
+# Install any needed packages specified in package.json
 RUN npm install
-COPY . /app/1235_auth/
-EXPOSE 1235
+
+# Copy the rest of the application code
+COPY . .
+
+# Make port 2234 available to the world outside this container
+EXPOSE 2234
+
+# Define environment variable, the port and MONGO_DB_SECRET
+ENV PORT=2234
+
+# Run app.js when the container launches
 CMD ["node", "index.js"]
