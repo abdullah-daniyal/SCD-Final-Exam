@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: abdullahdaniyal1234/auth-service:latest
+          ports:
+            - containerPort: 2234
+          env:
+            - name: PORT
+              value: "2234"
+            - name: MONGO_URL
+              value: "mongodb+srv://abdullahdaniyal:superflies2026@cluster0.s5b7diq.mongodb.net/scd-final"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 2234
+      targetPort: 2234
+  type: ClusterIP

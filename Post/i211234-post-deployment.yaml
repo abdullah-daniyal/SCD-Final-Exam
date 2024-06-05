@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: post-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: post
+  template:
+    metadata:
+      labels:
+        app: post
+    spec:
+      containers:
+        - name: post
+          image: abdullahdaniyal1234/post-service:latest
+          ports:
+            - containerPort: 2237
+          env:
+            - name: PORT
+              value: "2237"
+            - name: MONGO_URL
+              value: "mongodb+srv://abdullahdaniyal:superflies2026@cluster0.s5b7diq.mongodb.net/scd-final"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: post-service
+spec:
+  selector:
+    app: post
+  ports:
+    - protocol: TCP
+      port: 2237
+      targetPort: 2237
+  type: ClusterIP
